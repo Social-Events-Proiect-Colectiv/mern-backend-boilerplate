@@ -2,12 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const cors = require('cors');
-const sampleRoutes = require('./routes/sample');
 const userRoutes = require('./routes/user');
 
 const app = express();
 app.use(cors());
-const port = 3001;
+const port = 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
@@ -27,7 +26,7 @@ async function run() {
     await client.connect();
     console.log("Connected to MongoDB Atlas");
 
-    const collection = client.db("Users").collection("Users"); // Replace "DATABASE_NAME" with your actual database name
+    const collection = client.db("Users").collection("Users");
     const data = await collection.find({}).toArray();
     console.log(data);
   } catch (error) {

@@ -1,15 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const userRoutes = require('./routes/user');
+const mongoose = require('mongoose');
 
 const app = express();
 app.use(cors());
-const port = 5000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
 
 // Parse JSON request bodies
 app.use(express.json());
@@ -17,23 +13,19 @@ app.use(express.json());
 // Apply routes
 app.use('/', userRoutes);
 
-const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://danthecol:asd123@cluster0.f14vrrm.mongodb.net/?retryWrites=true&w=majority";
 
-async function run() {
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB Atlas");
-
-    const collection = client.db("Users").collection("Users");
-    const data = await collection.find({}).toArray();
-    console.log(data);
-  } catch (error) {
-    console.error("Error connecting to MongoDB Atlas:", error);
-  } finally {
-    await client.close();
-  }
-}
-
-run().catch(console.dir);
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log("Connected to MongoDB Atlas");
+  const port = 5000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+})
+.catch((error) => {
+  console.error("Error connecting to MongoDB Atlas:", error);
+});

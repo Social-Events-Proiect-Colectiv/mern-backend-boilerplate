@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://danthecol:asd123@cluster0.f14vrrm.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+}).catch(error => console.error("Error connecting to MongoDB:", error));
+
 
 const database = mongoose.connection;
 
